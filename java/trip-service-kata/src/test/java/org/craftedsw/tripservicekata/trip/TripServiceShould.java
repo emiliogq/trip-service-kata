@@ -30,6 +30,17 @@ public class TripServiceShould {
         assertTrue(trips.isEmpty());
     }
 
+    @Test
+    void getNoTripsWithANonFriendOfLoggedUser(){
+        TripService tripService = new TestableTripService();
+        User anonymous = new User();
+        User stranger = new User();
+        anonymous.addFriend(stranger);
+        this.loggedUser = REGISTERED;
+        List<Trip> trips = tripService.getTripsByUser(anonymous);
+        assertTrue(trips.isEmpty());
+    }
+
     protected class TestableTripService extends TripService {
         @Override
         protected User getLoggedUser(){
