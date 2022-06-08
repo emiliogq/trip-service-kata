@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TripServiceShould {
 
     private static final User REGISTERED = new User();
+    private static final Trip BARCELONA = new Trip("Barcelona");
     private User loggedUser;
     private User anonymous;
     private User stranger;
@@ -49,10 +50,27 @@ public class TripServiceShould {
         assertTrue(trips.isEmpty());
     }
 
+    @Test
+    void getTripsWithAFriendOfLoggedUser(){
+        User friend = new User();
+        friend.addFriend(REGISTERED);
+        friend.addTrip(BARCELONA);
+
+        this.loggedUser = REGISTERED;
+
+        List<Trip> trips = tripService.getTripsByUser(friend);
+        assertTrue(trips.contains(BARCELONA));
+    }
+
     protected class TestableTripService extends TripService {
         @Override
         protected User getLoggedUser(){
             return loggedUser;
+        }
+
+        @Override
+        protected List<Trip> tripsBy(User user) {
+            return user.trips();
         }
     }
 }
