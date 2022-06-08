@@ -15,7 +15,10 @@ public class User {
 	}
 	
 	public void addFriend(User user) {
-		friends.add(user);
+		if (!isFriend(user)) {
+			friends.add(user);
+			user.addFriend(this);
+		}
 	}
 
 	public void addTrip(Trip trip) {
@@ -26,4 +29,7 @@ public class User {
 		return trips;
 	}
 
+	public boolean isFriend(User anotherUser) {
+		return friends.contains(anotherUser);
+	}
 }
